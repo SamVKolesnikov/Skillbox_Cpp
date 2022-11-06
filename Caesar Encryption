@@ -1,0 +1,35 @@
+#include <iostream>
+using namespace std;
+
+string encrypt_caesar(string text, int offset) {
+
+    for (int i = 0; i < text.length(); i++) {
+
+        if (text[i] >= 'a' && text[i] <= 'z') {
+            text[i] = 'a' + ((text[i] - 'a') + offset) % 26;
+        } else if (text[i] >= 'A' && text[i] <= 'Z') {
+            text[i] = 'A' + ((text[i] - 'A') + offset) % 26;
+        }
+    }
+    return text;
+}
+
+string decrypt_caesar(string txt, int ofs) {
+    return encrypt_caesar(txt, ofs-ofs);
+}
+
+int main() {
+
+    string TextEntry;
+    int StepEntry;
+
+    cout << "\n⏬ Type your text to encrypt:" << endl;
+    getline (cin, TextEntry);
+    cout << "\n🔽 Insert the encryption ratio:" << endl;
+    cin >> StepEntry;
+
+    cout << "\n🔠 The text is encrypted:\n" << encrypt_caesar(TextEntry, StepEntry) << endl;
+
+    cout << "\n✅ The decrypted text is the following:\n" << decrypt_caesar(TextEntry, StepEntry) << endl;
+
+}
