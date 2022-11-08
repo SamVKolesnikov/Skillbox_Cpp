@@ -3,19 +3,31 @@ using namespace std;
 
 string encrypt_caesar(string text, int offset) {
 
+    if (abs (offset) > 25) offset %= 25;
+
+
     for (int i = 0; i < text.length(); i++) {
 
         if (text[i] >= 'a' && text[i] <= 'z') {
-            text[i] = 'a' + ((text[i] - 'a') + offset) % 26;
-        } else if (text[i] >= 'A' && text[i] <= 'Z') {
-            text[i] = 'A' + ((text[i] - 'A') + offset) % 26;
+            if ((text[i] + offset) < 'a') {
+                text[i] = ('z' + 1) - ('a' - (text[i] + offset));
+            } else if ((text[i] + offset) > 'z') {
+                text[i] = ('a' - 1) + ((text[i] + offset) - 'z');
+            } else text[i] = text[i] + offset;
+        }
+        if (text[i] >= 'A' && text[i] <= 'Z') {
+            if ((text[i] + offset) < 'A') {
+                text[i] = ('Z' + 1) - ('A' - (text[i] + offset));
+            } else if ((text[i] + offset) > 'Z') {
+                text[i] = ('A' - 1) + ((text[i] + offset) - 'Z');
+            } else text[i] = text[i] + offset;
         }
     }
     return text;
 }
 
 string decrypt_caesar(string txt, int ofs) {
-    return encrypt_caesar(txt, ofs-ofs);
+    return encrypt_caesar(txt, -ofs);
 }
 
 int main() {
@@ -28,8 +40,10 @@ int main() {
     cout << "\n🔽 Insert the encryption ratio:" << endl;
     cin >> StepEntry;
 
-    cout << "\n🔠 The text is encrypted:\n" << encrypt_caesar(TextEntry, StepEntry) << endl;
+    string EncryptedText = encrypt_caesar(TextEntry, StepEntry);
 
-    cout << "\n✅ The decrypted text is the following:\n" << decrypt_caesar(TextEntry, StepEntry) << endl;
+    cout << "\n🔠 The text is encrypted:\n" << EncryptedText << endl;
+
+    cout << "\n✅ The decrypted text is the following:\n" << decrypt_caesar(EncryptedText, StepEntry) << endl;
 
 }
