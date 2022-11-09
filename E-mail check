@@ -1,0 +1,79 @@
+#include <iostream>
+using namespace std;
+
+string FirstPart (string TextEntry) {
+    string expression = "";
+    for (int i = 0; i < TextEntry.length(); i++) {
+        if (TextEntry[i] != '@') expression += TextEntry[i];
+        else break;
+    }
+    return expression;
+}
+
+string SecondPart (string TextEntry) {
+    string expression = "";
+    for (int i = FirstPart(TextEntry).length()+1; i < TextEntry.length(); i++) {
+        expression += TextEntry[i];
+    }
+    return expression;
+}
+
+bool FirstDictionary (string TextEntry) {
+
+    string expression = FirstPart(TextEntry);
+    string dictionary = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!#$%&'*+-/=?^_`{|}~-.";
+
+    if (expression.length() == 0 || expression.length() > 64) return false;
+    else {
+        int count = 0;
+
+        for (int i = 0; i < expression.length(); i++) {
+            if ( expression[0] == '.' || expression[expression.length()-1] == '.' ||  //DOTS ON THE SIDES
+                 (expression[i] == '.' && expression[i+1] == '.') )                 //TWO DOTS TOGETHER
+            return false;
+            for (int c = 0; c < dictionary.length(); c++) {
+                if (expression[i] == dictionary[c]) count++;
+            }
+        }
+        if (count < expression.length()) return false;
+        else return true;
+    }
+}
+
+bool SecondDictionary (string TextEntry) {
+
+    string expression = SecondPart(TextEntry);
+    string dictionary = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-.";
+
+    if (expression.length() == 0 || expression.length() > 63) return false;
+    else {
+        int count = 0;
+
+        for (int i = 0; i < expression.length(); i++) {
+            if ( expression[0] == '.' || expression[expression.length()-1] == '.' ||      //DOTS ON THE SIDES
+                 (expression[i] == '.' && expression[i+1] == '.') )                     //TWO DOTS TOGETHER
+            return false;
+            for (int c = 0; c < dictionary.length(); c++) {
+                if (expression[i] == dictionary[c]) count++;
+            }
+        }
+        if (count < expression.length()) return false;
+        else return true;
+    }
+}
+
+
+//——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+int main() {
+    string email;
+    do {
+        std::cout << "\nEnter e-mail address:" << std::endl;
+        getline (cin, email);
+        //cout << FirstPart(email) << endl << SecondPart(email) << endl; //DEV-LINE
+        if (email == "exit") return 0;
+        if (FirstDictionary(email) == true && SecondDictionary(email) == true)
+            cout << "✅The address is correct." << endl;
+        else cout << "🚫The address is wrong." << endl;
+
+    } while (true);
+}
