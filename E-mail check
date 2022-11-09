@@ -63,11 +63,10 @@ bool SecondDictionary (string TextEntry) {
 }
 
 
-//——————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 int main() {
     string email;
     do {
-        std::cout << "\nEnter e-mail address:" << std::endl;
+        cout << "\nEnter e-mail address:" << endl;
         getline (cin, email);
         //cout << FirstPart(email) << endl << SecondPart(email) << endl; //DEV-LINE
         if (email == "exit") return 0;
