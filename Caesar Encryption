@@ -1,9 +1,9 @@
 #include <iostream>
 using namespace std;
 
-string encrypt_caesar(string text, int offset) {
+string encrypt_caesar (string text, int offset) {
 
-    if (abs (offset) > 25) offset %= 25;
+    if (abs (offset) > 26) offset %= 26;
 
 
     for (int i = 0; i < text.length(); i++) {
