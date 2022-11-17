@@ -1,0 +1,64 @@
+#include <iostream>
+using namespace std;
+
+string Get_IP_part (string IPEntry, int part) {
+    string FirstPart, SecondPart, ThirdPart, FourthPart;
+
+    for (int i = 0; i < IPEntry.length(); i++) {
+        if (IPEntry[i] != '.') FirstPart += IPEntry[i];
+        else break;
+    }
+    if (part == 0) return FirstPart;
+
+    for (int i = FirstPart.length() + 1; i < IPEntry.length(); i++) {
+        if (IPEntry[i] != '.') SecondPart += IPEntry[i];
+        else break;
+    }
+    if (part == 1) return SecondPart;
+
+    for (int i = FirstPart.length()+SecondPart.length() + 2; i < IPEntry.length(); i++) {
+        if (IPEntry[i] != '.') ThirdPart += IPEntry[i];
+        else break;
+    }
+    if (part == 2) return ThirdPart;
+
+    for (int i = FirstPart.length() + SecondPart.length() + ThirdPart.length() + 3; i < IPEntry.length(); i++) {
+        FourthPart += IPEntry[i];                                       //EXTRA SYMBOLS WILL BE INCLUDED FOR VALIDATION
+    }
+    if (part == 3) return FourthPart;
+}
+
+bool Dictionary (string IP_part) {
+
+    if (IP_part.length() == 0 || IP_part.length() > 3) return false;    //WRONG LENGTH
+    if ( (IP_part.length() > 1) && (IP_part[0] == '0') ) return false;  //EXCESS ZERO(-S)
+    else {
+        int digit = 0;
+        for (int i = 0; i < IP_part.length(); i++) {
+            if ( (IP_part[i] < '0') || (IP_part[i] > '9') ) return false; //OTHER THAN NUMBERS
+            digit = (digit + (int(IP_part[i])-48)) * 10;                  //SHOULD NOT BE MORE THAN 2550
+        }
+        if ( (digit/10) > 255 ) return false;                             //>255 IS WRONG
+        return true;
+    }
+}
+
+
+int main() {
+    string IP;
+    do {
+        cout << "\nEnter your IP address:" << endl;
+        cin >> IP;
+        if (IP == "exit") return 0;                                       //EXIT RUN
+
+        //cout << Get_IP_part(IP, 0) << "\t" << Get_IP_part(IP, 1) << "\t" << Get_IP_part(IP, 2) << "\t" << Get_IP_part(IP, 3) << endl; //DEV-LINE
+
+
+        if (Dictionary(Get_IP_part(IP, 0)) == true &&
+            Dictionary(Get_IP_part(IP, 1)) == true &&
+            Dictionary(Get_IP_part(IP, 2)) == true &&
+            Dictionary(Get_IP_part(IP, 3)) == true)
+            cout << "✅Valid" << endl;
+        else cout << "🚫Invalid" << endl;
+    } while (true);
+}
