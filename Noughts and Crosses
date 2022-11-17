@@ -1,0 +1,107 @@
+#include <iostream>
+using namespace std;
+
+void Game (string text, int *NoughtsWonReply, int *CrossesWonReply, int *NaughtsReply, int *CrossesReply, int *DotReply, bool *GoodReply) {
+    bool good = true;
+    int nought = 0, cross = 0, dot = 0, RowOfNoughts = 0, RowOfCrosses = 0, NoughtWon = 0, CrossWon = 0;
+
+    for (int i = 0; i < text.length(); i++) {
+        if (text.length() == 3) {
+            if (text[i] == 'O') {
+                nought++;
+                RowOfNoughts++;
+            } else if (text[i] == 'X') {
+                cross++;
+                RowOfCrosses++;
+            } else if (text[i] == '.') {
+                dot++;
+            } else {
+                good = false;
+                break;
+            }
+        } else {
+            good = false;
+            break;
+        }
+    }
+
+    if (RowOfNoughts == 3) {
+        NoughtWon++;
+    } else if (RowOfCrosses == 3) {
+        CrossWon++;
+    }
+
+    *NoughtsWonReply = NoughtWon;
+    *CrossesWonReply = CrossWon;
+    *NaughtsReply = nought;
+    *CrossesReply = cross;
+    *DotReply = dot;
+    *GoodReply = good;
+
+}
+
+
+int main() {
+
+    string UpperRow, MiddleRow, LowerRow, reply;
+    cout << "\nNOUGHTS & CROSSES\n\tOOO\t  XXX\n";
+
+    do {
+        cout << "\nStart!" << endl;
+        cin >> UpperRow >> MiddleRow >> LowerRow;
+
+        if ( UpperRow == "E" && MiddleRow == "X" && LowerRow == "T" ) return 0;
+
+        bool UpperRowGood = true, MiddleRowGood = true, LowerRowGood = true;
+        int nought, cross, dot, UpperRowNought = 0, MiddleRowNought = 0, LowerRowNought = 0, UpperRowCross = 0, MiddleRowCross = 0, LowerRowCross = 0, NoughtWon, CrossWon, UpperRowNoughtWon = 0, MiddleRowNoughtWon = 0, LowerRowNoughtWon = 0, UpperRowCrossWon = 0, MiddleRowCrossWon = 0, LowerRowCrossWon = 0, UpperRowDot = 0, MiddleRowDot = 0, LowerRowDot = 0;
+
+        Game(UpperRow, &UpperRowNoughtWon, &UpperRowCrossWon, &UpperRowNought, &UpperRowCross, &UpperRowDot,
+             &UpperRowGood);
+        Game(MiddleRow, &MiddleRowNoughtWon, &MiddleRowCrossWon, &MiddleRowNought, &MiddleRowCross, &MiddleRowDot,
+             &MiddleRowGood);
+        Game(LowerRow, &LowerRowNoughtWon, &LowerRowCrossWon, &LowerRowNought, &LowerRowCross, &LowerRowDot,
+             &LowerRowGood);
+
+        NoughtWon = UpperRowNoughtWon + MiddleRowNoughtWon + LowerRowNoughtWon;
+        CrossWon = UpperRowCrossWon + MiddleRowCrossWon + LowerRowCrossWon;
+        nought = UpperRowNought + MiddleRowNought + LowerRowNought;
+        cross = UpperRowCross + MiddleRowCross + LowerRowCross;
+        dot = UpperRowDot + MiddleRowDot + LowerRowDot;
+
+        if (UpperRowGood && MiddleRowGood && LowerRowGood) {
+
+            if ((UpperRow[0] == 'O' && MiddleRow[0] == 'O' && LowerRow[0] == 'O') ||
+                (UpperRow[1] == 'O' && MiddleRow[1] == 'O' && LowerRow[1] == 'O') ||
+                (UpperRow[2] == 'O' && MiddleRow[2] == 'O' && LowerRow[2] == 'O') ||
+                (UpperRow[3] == 'O' && MiddleRow[3] == 'O' && LowerRow[3] == 'O') ||
+                (UpperRow[0] == 'O' && MiddleRow[1] == 'O' && LowerRow[2] == 'O') ||
+                (UpperRow[2] == 'O' && MiddleRow[1] == 'O' && LowerRow[0] == 'O'))
+                NoughtWon++;
+
+
+            if ((UpperRow[0] == 'X' && MiddleRow[0] == 'X' && LowerRow[0] == 'X') ||
+                (UpperRow[1] == 'X' && MiddleRow[1] == 'X' && LowerRow[1] == 'X') ||
+                (UpperRow[2] == 'X' && MiddleRow[2] == 'X' && LowerRow[2] == 'X') ||
+                (UpperRow[3] == 'X' && MiddleRow[3] == 'X' && LowerRow[3] == 'X') ||
+                (UpperRow[0] == 'X' && MiddleRow[1] == 'X' && LowerRow[2] == 'X') ||
+                (UpperRow[2] == 'X' && MiddleRow[1] == 'X' && LowerRow[0] == 'X'))
+                CrossWon++;
+
+
+            if (NoughtWon > 1 || CrossWon > 1 ||
+                (NoughtWon >= 1 && CrossWon >= 1) ||
+                (NoughtWon == 1 && cross >= nought) ||
+                (CrossWon == 1 && nought >= cross) ||
+                (NoughtWon == 1 && cross < nought) ||
+                (CrossWon == 1 && nought != (cross - 1)))
+                reply = "⚠️Incorrect";
+            else if (NoughtWon == 0 && CrossWon == 0 && dot >= 0) reply = "🤷‍Nobody";
+            else if (NoughtWon == 1 && CrossWon == 0) reply = "🏆Vanya won!";
+            else if (NoughtWon == 0 && CrossWon == 1) reply = "🏆Petya won!";
+
+        } else reply = "⚠️Incorrect";
+
+        cout << reply << endl;
+
+    } while (true);
+}
